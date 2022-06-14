@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+	<title>Javascript Basics</title>
+	<meta charset="utf-8">
+	<script>
+var createSelectRange = function( min, max, select ) {
+	var i;
+	for ( i = min; (min < max ? i <= max : i >= max ); (min < max ? i++ : i-- ) ) {
+		select.innerHTML += '<option value="'+i+'">'+i+'</option>';
+	}
+}
+
+window.onload = function() {
+	createSelectRange( 1,31, document.getElementById( 'f_geb_tag' ) );
+	createSelectRange( 1,12, document.getElementById( 'f_geb_monat' ) );
+	createSelectRange( 2019,1919, document.getElementById( 'f_geb_jahr' ) );
+}
+
+
+	</script>
+	<style>
+	body, input, select, button { font:20px Arial; }
+	label { width:150px; display:inline-block; }
+	.check label, .radios label { width:auto; }
+	.radios { padding-left:160px; }
+	.radios label { margin-right:30px; }
+	div { border:solid #ccc; border-width:1px 0; padding:10px; }
+	button { width:200px; line-height:2; margin:20px;}
+
+	</style>
+</head>
+<body>
+	<h1>Newsletter Anmeldung</h1>
+	<form action="">
+		<div><label>E-Mail</label><input type="text" id="f_email"></div>
+		<div class="radios">
+			<label id="label_anrede_1">Herr <input type="radio" name="rb_anrede" id="f_andrede_h"></label>
+			<label id="label_anrede_2">Frau <input type="radio" name="rb_anrede" id="f_andrede_f"></label>
+			<label id="label_anrede_3">Divers <input type="radio" name="rb_anrede" id="f_andrede_d"></label>
+		</div>
+		<div><label for="f_vorname">Vorname</label><input type="text" id="f_vorname"></div>
+		<div><label>Nachname</label><input type="text" id="f_nachname"></div>
+	  <div>
+				<label>Geburtsdatum</label>
+				<select id="f_geb_tag"><option>Tag</option></select>
+				<select id="f_geb_monat"><option>Monat</option></select>
+				<select id="f_geb_jahr"><option>Jahr</option></select>
+		</div>
+		<div class="check"><label id="label_datenschutz"><input type="checkbox" id="f_datenschutz"> Datenschutz akzeptiert.</label></div>
+		<button id="btn_submit">Anmelden</button>
+	</form>
+
+	<script>
+		"use strict";
+
+
+
+		// function validateForm(){
+		// 	let valid = false;
+
+		// 	//Check name inputs
+			
+		// }
+		const form = document.querySelector('form');
+
+		form.onclick = function(e) {
+			e.preventDefault();
+
+			let error = false;
+
+			
+
+			const firstname = document.querySelector('#f_vorname').value;
+			const lastname = document.querySelector('#f_nachname').value;
+
+			const gender_male = document.querySelector('#f_andrede_h');
+			const gender_female = document.querySelector('#f_andrede_f');
+			const gender_div = document.querySelector('#f_andrede_d');
+
+			const email = document.querySelector('#f_email').value;
+
+			const birthDate_day = document.querySelector('#f_geb_tag');
+			const birthDate_month = document.querySelector('#f_geb_monat');
+			const birthDate_year = document.querySelector('#f_geb_jahr');
+
+			const datenschutz_Checkbox = document.querySelector('#f_datenschutz');
+
+			const submit = document.querySelector('#btn_submit');
+
+			if(e.target == submit){
+				console.log('submitet');
+
+				//check name inputs
+				if(firstname.length <= 2 || lastname.length <= 2){
+					console.log('names are n-ok');
+					error = true;
+				}
+
+				//check email
+				if(!email.match(/^[^\s@]+@[a-z\-\.]+\.[a-z]{2,}$/i)){
+					console.log('email is n-ok');
+					error = true;
+				}
+
+			}
+		};
+		
+	</script>
+</body>
+</html>
