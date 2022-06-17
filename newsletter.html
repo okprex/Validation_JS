@@ -16,9 +16,9 @@ window.onload = function() {
 	createSelectRange( 1,12, document.getElementById( 'f_geb_monat' ) );
 	createSelectRange( 2019,1919, document.getElementById( 'f_geb_jahr' ) );
 }
-
-
 	</script>
+
+	<script src="./FormValidator.js"></script>
 	<style>
 	body, input, select, button { font:20px Arial; }
 	label { width:150px; display:inline-block; }
@@ -27,34 +27,47 @@ window.onload = function() {
 	.radios label { margin-right:30px; }
 	div { border:solid #ccc; border-width:1px 0; padding:10px; }
 	button { width:200px; line-height:2; margin:20px;}
-
+	.invalid{border:dotted red 3px; color:red;}
+	.valid{box-shadow: 0 0 2px green;}
+	.form_error{border: solid red 1px; color: red;display:none;}
 	</style>
 </head>
 <body>
 	<h1>Newsletter Anmeldung</h1>
-	<form action="">
-		<div><label>E-Mail</label><input type="text" id="f_email"></div>
-		<div class="radios">
+	<form action="kjh">
+		<section class="form_error">Bitte füllen sie alle Felder den Angaben entsprechend aus!</section>
+		<div><label>E-Mail</label><input type="text" id="f_email" data-val="email"></div>
+		<div class="radios" id="gender_radio" data-val="radio">
 			<label id="label_anrede_1">Herr <input type="radio" name="rb_anrede" id="f_andrede_h"></label>
 			<label id="label_anrede_2">Frau <input type="radio" name="rb_anrede" id="f_andrede_f"></label>
 			<label id="label_anrede_3">Divers <input type="radio" name="rb_anrede" id="f_andrede_d"></label>
 		</div>
-		<div><label for="f_vorname">Vorname</label><input type="text" id="f_vorname"></div>
-		<div><label>Nachname</label><input type="text" id="f_nachname"></div>
-	  <div>
+		<div><label for="f_vorname">Vorname</label><input type="text" id="f_vorname" data-val="min-2"></div>
+		<div><label>Nachname</label><input type="text" id="f_nachname" data-val="min-2"></div>
+	  <div data-val="date">
 				<label>Geburtsdatum</label>
 				<select id="f_geb_tag"><option>Tag</option></select>
 				<select id="f_geb_monat"><option>Monat</option></select>
 				<select id="f_geb_jahr"><option>Jahr</option></select>
 		</div>
-		<div class="check"><label id="label_datenschutz"><input type="checkbox" id="f_datenschutz"> Datenschutz akzeptiert.</label></div>
+		<div class="check" data-val="checkMin-1"><label id="label_datenschutz"><input type="checkbox" id="f_datenschutz"> Datenschutz akzeptiert.</label></div>
 		<button id="btn_submit">Anmelden</button>
 	</form>
 
 	<script>
 		"use strict";
 
+		
+		let form1_submit = document.querySelector('#btn_submit');
 
+		form1_submit.onclick = function(e){
+			e.preventDefault();
+
+			let form = document.querySelector('form');
+			let validation = new FormValidator(form);
+
+			validation.validate();
+		}
 
 		// function validateForm(){
 		// 	let valid = false;
@@ -62,49 +75,52 @@ window.onload = function() {
 		// 	//Check name inputs
 			
 		// }
-		const form = document.querySelector('form');
 
-		form.onclick = function(e) {
-			e.preventDefault();
+		// let test = document.querySelector('#f_vorname');
+		// console.log(test.dataset.ert);
+		// const form = document.querySelector('form');
 
-			let error = false;
+		// form.onclick = function(e) {
+		// 	e.preventDefault();
+
+		// 	let error = false;
 
 			
 
-			const firstname = document.querySelector('#f_vorname').value;
-			const lastname = document.querySelector('#f_nachname').value;
+		// 	const firstname = document.querySelector('#f_vorname').value;
+		// 	const lastname = document.querySelector('#f_nachname').value;
 
-			const gender_male = document.querySelector('#f_andrede_h');
-			const gender_female = document.querySelector('#f_andrede_f');
-			const gender_div = document.querySelector('#f_andrede_d');
+		// 	const gender_male = document.querySelector('#f_andrede_h');
+		// 	const gender_female = document.querySelector('#f_andrede_f');
+		// 	const gender_div = document.querySelector('#f_andrede_d');
 
-			const email = document.querySelector('#f_email').value;
+		// 	const email = document.querySelector('#f_email').value;
 
-			const birthDate_day = document.querySelector('#f_geb_tag');
-			const birthDate_month = document.querySelector('#f_geb_monat');
-			const birthDate_year = document.querySelector('#f_geb_jahr');
+		// 	const birthDate_day = document.querySelector('#f_geb_tag');
+		// 	const birthDate_month = document.querySelector('#f_geb_monat');
+		// 	const birthDate_year = document.querySelector('#f_geb_jahr');
 
-			const datenschutz_Checkbox = document.querySelector('#f_datenschutz');
+		// 	const datenschutz_Checkbox = document.querySelector('#f_datenschutz');
 
-			const submit = document.querySelector('#btn_submit');
+		// 	const submit = document.querySelector('#btn_submit');
 
-			if(e.target == submit){
-				console.log('submitet');
+		// 	if(e.target == submit){
+		// 		console.log('submitet');
 
-				//check name inputs
-				if(firstname.length <= 2 || lastname.length <= 2){
-					console.log('names are n-ok');
-					error = true;
-				}
+		// 		//check name inputs
+		// 		if(firstname.length <= 2 || lastname.length <= 2){
+		// 			console.log('names are n-ok');
+		// 			error = true;
+		// 		}
 
-				//check email
-				if(!email.match(/^[^\s@]+@[a-z\-\.]+\.[a-z]{2,}$/i)){
-					console.log('email is n-ok');
-					error = true;
-				}
+		// 		//check email
+		// 		if(!email.match(/^[^\s@]+@[a-z\-\.]+\.[a-z]{2,}$/i)){
+		// 			console.log('email is n-ok');
+		// 			error = true;
+		// 		}
 
-			}
-		};
+		// 	}
+		// };
 		
 	</script>
 </body>
